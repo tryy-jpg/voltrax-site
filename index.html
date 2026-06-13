@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark" data-lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOLTRAX — Mobilidade Elétrica Industrial</title>
+  <meta name="description" content="VOLTRAX desenvolve maquinário agrícola elétrico de alta performance para o agronegócio do futuro." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════ LOADING SCREEN ═══════════════════ -->
+  <div id="loading-screen">
+    <div class="loading-logo">
+      <span class="loading-logo-text">VOLTRAX</span>
+    </div>
+    <div class="loading-bar">
+      <div class="loading-fill"></div>
+    </div>
+    <p class="loading-text" id="loadingText">Inicializando sistemas...</p>
+  </div>
+
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <nav id="navbar" class="navbar">
+    <div class="nav-inner">
+
+      <!-- Logo -->
+      <a href="#/home" class="nav-logo" data-route="/home">
+        <span class="nav-logo-text">VOLTRAX</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links">
+        <li class="nav-item has-mega">
+          <a href="#/vehicles" class="nav-link" data-route="/vehicles">
+            <span data-i18n="nav.vehicles">Veículos</span>
+            <svg class="nav-chevron" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <div class="mega-menu">
+            <div class="mega-inner">
+              <div class="mega-col">
+                <p class="mega-label" data-i18n="nav.mega.agricultural">Agrícola</p>
+                <a href="#/vehicles?cat=tractor"   class="mega-link" data-route="/vehicles" data-cat="tractor">Tratores Elétricos</a>
+                <a href="#/vehicles?cat=harvester" class="mega-link" data-route="/vehicles" data-cat="harvester">Colheitadeiras</a>
+                <a href="#/vehicles?cat=sprayer"   class="mega-link" data-route="/vehicles" data-cat="sprayer">Pulverizadores</a>
+              </div>
+              <div class="mega-col">
+                <p class="mega-label" data-i18n="nav.mega.industrial">Industrial</p>
+                <a href="#/vehicles?cat=loader"    class="mega-link" data-route="/vehicles" data-cat="loader">Carregadeiras</a>
+                <a href="#/vehicles?cat=excavator" class="mega-link" data-route="/vehicles" data-cat="excavator">Escavadeiras</a>
+                <a href="#/vehicles?cat=forklift"  class="mega-link" data-route="/vehicles" data-cat="forklift">Empilhadeiras</a>
+              </div>
+              <div class="mega-col">
+                <p class="mega-label" data-i18n="nav.mega.new">Novidades</p>
+                <a href="#/vehicles?cat=new" class="mega-link mega-featured" data-route="/vehicles">VX-900 PRO <span class="badge-new">Novo</span></a>
+                <a href="#/showroom" class="mega-link" data-route="/showroom">Showroom 3D</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#/technology" class="nav-link" data-route="/technology" data-i18n="nav.technology">Tecnologia</a>
+        </li>
+        <li class="nav-item">
+          <a href="#/energy" class="nav-link" data-route="/energy" data-i18n="nav.energy">Energia</a>
+        </li>
+        <li class="nav-item has-mega">
+          <a href="#/marketplace" class="nav-link" data-route="/marketplace">
+            <span data-i18n="nav.marketplace">Loja</span>
+            <svg class="nav-chevron" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <div class="mega-menu">
+            <div class="mega-inner">
+              <div class="mega-col">
+                <p class="mega-label">Peças</p>
+                <a href="#/marketplace?cat=batteries" class="mega-link" data-route="/marketplace" data-cat="batteries">Baterias</a>
+                <a href="#/marketplace?cat=solar"     class="mega-link" data-route="/marketplace" data-cat="solar">Módulos Solares</a>
+                <a href="#/marketplace?cat=parts"     class="mega-link" data-route="/marketplace" data-cat="parts">Componentes</a>
+              </div>
+              <div class="mega-col">
+                <p class="mega-label">Serviços</p>
+                <a href="#/marketplace?cat=maintenance"  class="mega-link" data-route="/marketplace" data-cat="maintenance">Manutenção</a>
+                <a href="#/marketplace?cat=accessories"  class="mega-link" data-route="/marketplace" data-cat="accessories">Acessórios</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#/branches" class="nav-link" data-route="/branches" data-i18n="nav.branches">Filiais</a>
+        </li>
+        <li class="nav-item">
+          <a href="#/about" class="nav-link" data-route="/about" data-i18n="nav.about">Empresa</a>
+        </li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <button class="nav-action-btn" id="searchToggle" aria-label="Buscar">
+          <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M15 15l-3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+
+        <button class="nav-action-btn lang-toggle" id="langToggle" aria-label="Idioma">
+          <span id="langLabel">PT</span>
+        </button>
+
+        <button class="nav-action-btn" id="themeToggle" aria-label="Tema">
+          <svg class="icon-sun" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.93 4.93l1.41 1.41M13.66 13.66l1.41 1.41M4.93 15.07l1.41-1.41M13.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="icon-moon" viewBox="0 0 20 20" fill="none"><path d="M17.5 11.5A7.5 7.5 0 019 3a7.5 7.5 0 100 14 7.5 7.5 0 008.5-5.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+
+        <button class="nav-action-btn cart-btn" id="cartBtn" aria-label="Carrinho">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M3 3h2l2.4 8h8l2-6H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="16" r="1.2" fill="currentColor"/><circle cx="15" cy="16" r="1.2" fill="currentColor"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+
+        <a href="#/login" class="nav-cta" data-route="/login" id="loginNavBtn">
+          <span data-i18n="nav.login">Entrar</span>
+        </a>
+
+        <a href="#/support" class="nav-action-btn" data-route="/support" aria-label="Suporte">
+          <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 14v-1M10 10a2 2 0 10-2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+      <div class="search-inner">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M15 15l-3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Buscar veículos, peças, tecnologia..." data-i18n-placeholder="search.placeholder" autocomplete="off" />
+        <button id="searchClose">ESC</button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-inner">
+      <a href="#/vehicles"    class="mobile-link" data-route="/vehicles"    data-i18n="nav.vehicles">Veículos</a>
+      <a href="#/technology"  class="mobile-link" data-route="/technology"  data-i18n="nav.technology">Tecnologia</a>
+      <a href="#/energy"      class="mobile-link" data-route="/energy"      data-i18n="nav.energy">Energia</a>
+      <a href="#/marketplace" class="mobile-link" data-route="/marketplace" data-i18n="nav.marketplace">Loja</a>
+      <a href="#/branches"    class="mobile-link" data-route="/branches"    data-i18n="nav.branches">Filiais</a>
+      <a href="#/showroom"    class="mobile-link" data-route="/showroom">Showroom</a>
+      <a href="#/sponsors"    class="mobile-link" data-route="/sponsors"    data-i18n="nav.sponsors">Parceiros</a>
+      <a href="#/about"       class="mobile-link" data-route="/about"       data-i18n="nav.about">Empresa</a>
+      <a href="#/support"     class="mobile-link" data-route="/support"     data-i18n="nav.support">Suporte</a>
+      <a href="#/contact"     class="mobile-link" data-route="/contact"     data-i18n="nav.contact">Contato</a>
+      <div class="mobile-divider"></div>
+      <a href="#/login" class="mobile-link mobile-cta" data-route="/login" data-i18n="nav.login">Entrar</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ APP CONTAINER ═══════════════════ -->
+  <main id="app" class="app"></main>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo-text">VOLTRAX</span>
+          <p data-i18n="footer.tagline">Mobilidade elétrica industrial para o agronegócio do futuro.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="LinkedIn" class="social-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube" class="social-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.97A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0A0805"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram" class="social-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-col">
+            <h4 data-i18n="footer.col.products">Produtos</h4>
+            <a href="#/vehicles?cat=tractor"   data-route="/vehicles">Tratores Elétricos</a>
+            <a href="#/vehicles?cat=harvester" data-route="/vehicles">Colheitadeiras</a>
+            <a href="#/vehicles?cat=loader"    data-route="/vehicles">Carregadeiras</a>
+            <a href="#/showroom"               data-route="/showroom">Showroom 3D</a>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footer.col.technology">Tecnologia</h4>
+            <a href="#/technology" data-route="/technology">IA & Telemetria</a>
+            <a href="#/energy"     data-route="/energy">Energia Solar</a>
+            <a href="#/technology" data-route="/technology">Autonomia</a>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footer.col.company">Empresa</h4>
+            <a href="#/about"    data-route="/about">Sobre nós</a>
+            <a href="#/sponsors" data-route="/sponsors">Parceiros</a>
+            <a href="#/branches" data-route="/branches">Filiais</a>
+            <a href="#/contact"  data-route="/contact">Contato</a>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footer.col.support">Suporte</h4>
+            <a href="#/support"      data-route="/support">Central de Ajuda</a>
+            <a href="#/support#faq"  data-route="/support">FAQ</a>
+            <a href="#/marketplace"  data-route="/marketplace">Peças & Acessórios</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VOLTRAX Mobilidade Elétrica Industrial. <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
+        <div class="footer-legal">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════ TOAST ═══════════════════ -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ═══════════════════ MODAL ═══════════════════ -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div id="modal-box" class="modal-box">
+      <button id="modal-close" class="modal-close" aria-label="Fechar">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
