@@ -1577,7 +1577,6 @@ input, textarea, select {
   background: var(--clr-surface2); border: 1.5px solid var(--clr-border3);
   border-radius: var(--r-sm); color: var(--clr-text); font-size: 0.9rem;
   transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
-  appearance: none;
   -webkit-appearance: none;
 }
 .form-input:focus {
@@ -2016,9 +2015,10 @@ input, textarea, select {
   /* ─ ALL icon buttons hidden (search, lang, theme, cart go in drawer) ─ */
   .nav-actions .nav-action-btn { display: none !important; }
 
-  /* ─ "Entrar" button: keep visible, compact size ─ */
+  /* ─ "Entrar" button: show compact on mobile by default ─ */
+  /* No !important — JS inline style must be able to override (hide when logged in) */
   .nav-actions .nav-cta {
-    display: flex !important;
+    display: flex;
     padding: 0.4rem 0.875rem;
     font-size: 0.78rem;
     margin-left: 0;
