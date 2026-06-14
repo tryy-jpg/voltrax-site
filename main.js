@@ -81,15 +81,133 @@ function applyI18n() {
 }
 
 /* ─── DATA ───────────────────────────────────────────────────────────────── */
+
+// Image sets: [main, side, rear, top/aerial, field-operation, industrial]
+const IMG = {
+  // Tractors / Field ops
+  tractor_hero: 'https://images.unsplash.com/photo-1595872374038-a9c94e86440c',
+  tractor_side: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9',
+  tractor_field: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
+  tractor_aerial: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399',
+  tractor_sunset: 'https://images.unsplash.com/photo-1490129375591-2658831e8a98',
+  tractor_tech: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2',
+  tractor_work: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a',
+  tractor_rows: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b',
+  // Harvesters
+  harvest_main: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d',
+  harvest_field: 'https://images.unsplash.com/photo-1571543257034-de4fdb5b4a93',
+  harvest_aerial: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449',
+  harvest_grain: 'https://images.unsplash.com/photo-1543968396-0a4f47b4efc9',
+  harvest_golden: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b',
+  harvest_close: 'https://images.unsplash.com/photo-1415241053783-5cd89e1059dc',
+  // Sprayer
+  spray_main: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449',
+  spray_boom: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc',
+  spray_drone: 'https://images.unsplash.com/photo-1568992688065-536aad8a12f6',
+  spray_aerial: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
+  spray_row: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b',
+  spray_tech: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2',
+  // Loaders / Industrial
+  loader_main: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  loader_work: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+  loader_bucket: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
+  loader_silo: 'https://images.unsplash.com/photo-1565008576549-57569a49371d',
+  loader_ind: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
+  loader_night: 'https://images.unsplash.com/photo-1486325212027-8081e485255e',
+  // Excavator
+  excav_main: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1',
+  excav_work: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64',
+  excav_rural: 'https://images.unsplash.com/photo-1590496793929-36417d3117de',
+  excav_close: 'https://images.unsplash.com/photo-1581092162384-8987c1d64926',
+  excav_earth: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
+  excav_site: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  // Forklift / Warehouse
+  fork_main: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d',
+  fork_work: 'https://images.unsplash.com/photo-1553413077-190dd305871c',
+  fork_silo: 'https://images.unsplash.com/photo-1565008576549-57569a49371d',
+  fork_coop: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
+  fork_bags: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
+  fork_wide: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  // Solar / Energy
+  solar_panels: 'https://images.unsplash.com/photo-1509391366360-2e959784a276',
+  solar_farm: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063',
+  solar_field: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e',
+  // EV / Battery
+  ev_charge: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7',
+  battery_pack: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5',
+  battery_cell: 'https://images.unsplash.com/photo-1620714223084-8fcacc2dbe4d',
+};
+
+function imgUrl(key, w=1200, q=88) {
+  return `${IMG[key] || IMG.tractor_hero}?w=${w}&q=${q}&auto=format&fit=crop`;
+}
+
 const VEHICLES = [
+  /* ── FLAGSHIP ────────────────────────────────────────────────────────── */
   {
-    id: 'vx900',  cat: 'tractor',
+    id: 'vtx9000x', cat: 'tractor',
+    name: 'VTX-9000X',
+    tagline: 'Performance absoluta. Zero compromisso.',
+    desc: 'O trator elétrico mais avançado da história do agronegócio brasileiro. IA de condução autônoma nível 4, bateria de 520 kWh e carregamento solar integrado diretamente no capô.',
+    img: imgUrl('tractor_hero', 900),
+    images: [
+      { src: imgUrl('tractor_hero', 1400), label: 'Vista Principal', angle: 'Frontal 3/4' },
+      { src: imgUrl('tractor_side', 1400), label: 'Vista Lateral', angle: 'Perfil Direito' },
+      { src: imgUrl('tractor_sunset', 1400), label: 'Vista Traseira', angle: 'Perfil Posterior' },
+      { src: imgUrl('tractor_aerial', 1400), label: 'Vista Superior', angle: 'Aérea' },
+      { src: imgUrl('tractor_field', 1400), label: 'Em Operação', angle: 'Campo' },
+      { src: imgUrl('tractor_tech', 1400), label: 'Ambiente Industrial', angle: 'Estúdio' },
+    ],
+    power: '640 kW', range: '22h', charge: '2h',
+    price: 'R$ 1.290.000',
+    badge: 'Edição Limitada',
+    specs: {
+      'Potência máxima': '640 kW (870 cv)',
+      'Autonomia operacional': '22h em carga contínua',
+      'Bateria': '520 kWh LFP Gen III',
+      'Recarga rápida DC': '200 kW — ciclo completo em 2h',
+      'Solar integrado': '18 kWp — painéis no capô e cabine',
+      'Tração': '4x4 com vetor de torque ativo por eixo',
+      'Peso operacional': '14.800 kg',
+      'Largura máxima': '3,5 m',
+      'Capacidade de tração': '42 t',
+      'IA Embarcada': 'AutoDrive Nível 4 — VOLTRAX OS v4',
+      'Conectividade': '5G + IoT via satélite (cobertura global)',
+      'Displays': 'Dual 15" UHD + HUD Augmented Reality',
+      'Sensores': '16 câmeras, LiDAR, radar, GNSS RTK ±2cm',
+      'Atualização OTA': 'Wireless — novos recursos sem visita técnica',
+      'V2G': 'Sim — alimenta a fazenda durante pico de demanda',
+    },
+    features: [
+      'AutoDrive Nível 4 — operação totalmente autônoma em campos pré-mapeados',
+      'Painel solar integrado de 18 kWp no capô e teto da cabine',
+      'Head-Up Display (HUD) com realidade aumentada para dados agronômicos',
+      'Recarga bidirecional V2G — alimenta a fazenda nos picos de energia',
+      'Análise de solo em tempo real por sensores espectrais embarcados',
+      'Conectividade 5G + IoT via satélite para operação em qualquer região',
+      'Atualização OTA — novos algoritmos de IA sem precisar de assistência técnica',
+      'Integração nativa com drones VOLTRAX para monitoramento colaborativo',
+    ],
+    is3D: true,
+  },
+
+  /* ── TRATORES ────────────────────────────────────────────────────────── */
+  {
+    id: 'vx900', cat: 'tractor',
     name: 'VX-900 PRO',
-    desc: 'O trator elétrico mais potente do mercado. Torque imediato e zero emissão.',
-    img: 'https://images.unsplash.com/photo-1591093468677-c5a9f77aec5a?w=800&q=80',
+    tagline: 'Força bruta. Inteligência embarcada.',
+    desc: 'O trator elétrico mais potente do mercado. Torque máximo desde o primeiro instante, zero emissão e IA de condução nível 3.',
+    img: imgUrl('tractor_side', 900),
+    images: [
+      { src: imgUrl('tractor_side', 1400), label: 'Vista Principal', angle: 'Lateral' },
+      { src: imgUrl('tractor_hero', 1400), label: 'Vista Frontal', angle: 'Frontal 3/4' },
+      { src: imgUrl('tractor_rows', 1400), label: 'Vista Traseira', angle: 'Posterior' },
+      { src: imgUrl('tractor_aerial', 1400), label: 'Visão Aérea', angle: 'Top' },
+      { src: imgUrl('tractor_work', 1400), label: 'Em Operação', angle: 'Campo' },
+      { src: imgUrl('tractor_tech', 1400), label: 'Ambiente Industrial', angle: 'Estúdio' },
+    ],
     power: '480 kW', range: '18h', charge: '2.5h',
-    price: 'R$ 890.000',
-    badge: 'Novo',
+    price: 'R$ 890.000', badge: 'Novo',
     specs: {
       'Potência': '480 kW (650 cv)',
       'Autonomia': '18h em carga contínua',
@@ -99,107 +217,246 @@ const VEHICLES = [
       'Peso': '12.400 kg',
       'Largura': '3,2 m',
       'Capacidade de tração': '32 t',
+      'IA Embarcada': 'AutoDrive Nível 3',
+      'Display': '12" UHD touchscreen',
     },
-    features: ['IA de condução autônoma nível 3', 'Telemetria em tempo real', 'Integração solar opcional', 'Sistema antiaderência adaptativo'],
+    features: [
+      'IA de condução autônoma nível 3 com desvio de obstáculos',
+      'Telemetria em tempo real via VOLTRAX Connect',
+      'Integração com kit solar VOLTRAX (recarga em campo)',
+      'Sistema antiaderência adaptativo para solos irregulares',
+      'Diagnóstico preditivo com alerta remoto de falhas',
+    ],
   },
   {
-    id: 'vx600',  cat: 'tractor',
+    id: 'vx600', cat: 'tractor',
     name: 'VX-600',
-    desc: 'Potência e eficiência para médias e grandes propriedades.',
-    img: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80',
+    tagline: 'Rendimento máximo. Custo mínimo.',
+    desc: 'Potência e eficiência equilibradas para médias e grandes propriedades. O custo-benefício mais alto da linha VX.',
+    img: imgUrl('tractor_field', 900),
+    images: [
+      { src: imgUrl('tractor_field', 1400), label: 'Vista Principal', angle: 'Campo' },
+      { src: imgUrl('tractor_rows', 1400), label: 'Vista Lateral', angle: 'Perfil' },
+      { src: imgUrl('tractor_work', 1400), label: 'Vista Traseira', angle: 'Posterior' },
+      { src: imgUrl('tractor_aerial', 1400), label: 'Visão Aérea', angle: 'Top' },
+      { src: imgUrl('tractor_hero', 1400), label: 'Em Operação', angle: 'Frontal' },
+      { src: imgUrl('tractor_tech', 1400), label: 'Ambiente Industrial', angle: 'Estúdio' },
+    ],
     power: '320 kW', range: '14h', charge: '3h',
-    price: 'R$ 620.000',
-    badge: null,
+    price: 'R$ 620.000', badge: null,
     specs: {
       'Potência': '320 kW (435 cv)',
       'Autonomia': '14h em carga contínua',
       'Bateria': '280 kWh LFP',
       'Recarga rápida': '100 kW DC (3h)',
-      'Tração': '4x4',
+      'Tração': '4x4 com diferencial eletrônico',
       'Peso': '9.800 kg',
+      'Largura': '2,9 m',
+      'Capacidade de tração': '24 t',
+      'Display': '10" touchscreen',
     },
-    features: ['Telemetria em tempo real', 'Controle de velocidade adaptativo', 'Display central 12"'],
+    features: [
+      'Telemetria em tempo real com app VOLTRAX Connect',
+      'Controle de velocidade adaptativo por GPS RTK',
+      'Display central 10" com painel agronômico integrado',
+      'Compatível com implementos de terceiros via ISO-BUS',
+      'Modo econômico com recálculo automático de autonomia',
+    ],
   },
+
+  /* ── COLHEITADEIRAS ──────────────────────────────────────────────────── */
   {
-    id: 'ch800',  cat: 'harvester',
+    id: 'ch800', cat: 'harvester',
     name: 'CH-800 HARVEST',
-    desc: 'Colheitadeira elétrica de alta capacidade para colheitas de grãos e cana.',
-    img: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&q=80',
+    tagline: 'A colheita mais eficiente do Brasil.',
+    desc: 'Colheitadeira elétrica de alta capacidade para grãos, soja e cana-de-açúcar. Plataforma de 45 pés e graneleiro de 14.000 litros.',
+    img: imgUrl('harvest_main', 900),
+    images: [
+      { src: imgUrl('harvest_main', 1400), label: 'Vista Principal', angle: 'Lateral' },
+      { src: imgUrl('harvest_field', 1400), label: 'Vista Frontal', angle: 'Frontal' },
+      { src: imgUrl('harvest_grain', 1400), label: 'Vista Traseira', angle: 'Descarga' },
+      { src: imgUrl('harvest_aerial', 1400), label: 'Visão Aérea', angle: 'Top' },
+      { src: imgUrl('harvest_golden', 1400), label: 'Em Operação', angle: 'Campo de Soja' },
+      { src: imgUrl('harvest_close', 1400), label: 'Detalhe Plataforma', angle: 'Close-up' },
+    ],
     power: '560 kW', range: '10h', charge: '4h',
-    price: 'R$ 1.450.000',
-    badge: 'Premium',
+    price: 'R$ 1.450.000', badge: 'Premium',
     specs: {
-      'Potência': '560 kW',
-      'Autonomia': '10h',
-      'Bateria': '500 kWh',
-      'Plataforma': '45 pés',
+      'Potência': '560 kW (760 cv)',
+      'Autonomia': '10h de colheita contínua',
+      'Bateria': '500 kWh LFP + expansão opcional',
+      'Recarga rápida': '150 kW DC (4h ciclo completo)',
+      'Plataforma de corte': '45 pés (13,7 m)',
       'Capacidade do graneleiro': '14.000 L',
+      'Velocidade de colheita': 'Até 12 km/h',
+      'Taxa de separação': '99,4% de eficiência',
+      'Piloto automático': 'GPS RTK ±2 cm',
+      'Monitor de perdas': 'Sensores ultrassônicos em tempo real',
     },
-    features: ['Separação automatizada', 'Monitoramento de perdas em tempo real', 'Piloto automático por GPS RTK'],
+    features: [
+      'Plataforma flexível de 45 pés com acompanhamento de terreno ativo',
+      'Monitoramento de perdas grain-by-grain em tempo real',
+      'Piloto automático por GPS RTK com precisão de ±2 cm',
+      'Separação automatizada por sensor NIR para grãos úmidos',
+      'Sistema anti-embuchamento com reversão elétrica instantânea',
+      'Descarga de grãos em movimento a 140 L/s',
+    ],
   },
+
+  /* ── PULVERIZADORES ──────────────────────────────────────────────────── */
   {
     id: 'sp400', cat: 'sprayer',
     name: 'SP-400 SPRAY',
-    desc: 'Pulverizador elétrico de precisão com sistema de mapeamento integrado.',
-    img: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80',
+    tagline: 'Precisão cirúrgica. Consumo mínimo.',
+    desc: 'Pulverizador elétrico de precisão com sistema de mapeamento RTK integrado. Barra de 36 metros e tanque de 5.000 litros.',
+    img: imgUrl('spray_main', 900),
+    images: [
+      { src: imgUrl('spray_main', 1400), label: 'Vista Principal', angle: 'Frontal' },
+      { src: imgUrl('spray_boom', 1400), label: 'Barra Aberta', angle: 'Lateral Plena' },
+      { src: imgUrl('spray_aerial', 1400), label: 'Vista Aérea', angle: 'Top' },
+      { src: imgUrl('spray_row', 1400), label: 'Em Fileiras', angle: 'Campo' },
+      { src: imgUrl('spray_drone', 1400), label: 'Em Operação', angle: 'Aplicação' },
+      { src: imgUrl('spray_tech', 1400), label: 'Painel de Controle', angle: 'Cabine' },
+    ],
     power: '220 kW', range: '12h', charge: '2h',
-    price: 'R$ 480.000',
-    badge: null,
+    price: 'R$ 480.000', badge: null,
     specs: {
-      'Potência': '220 kW',
-      'Autonomia': '12h',
-      'Tanque': '5.000 L',
-      'Barra': '36 m',
+      'Potência': '220 kW (300 cv)',
+      'Autonomia': '12h de operação',
+      'Bateria': '200 kWh LFP',
+      'Recarga rápida': '100 kW DC (2h)',
+      'Tanque': '5.000 L com indicador volumétrico',
+      'Barra de pulverização': '36 m (extensível a 42 m)',
+      'Bicos': '504 individuais com controle eletrônico de seção',
+      'Vazão': 'Regulagem automática por velocidade (0,5–12 km/h)',
+      'Mapeamento': 'RTK ±2 cm com shapefile de prescrição',
+      'Filtragem': 'Autolimpeza em 30 segundos',
     },
-    features: ['Bicos individuais com controle de seção', 'Mapeamento RTK', 'Modo anti-deriva automático'],
+    features: [
+      '504 bicos individuais com controle eletrônico de seção (corte por bico)',
+      'Mapeamento por GPS RTK com leitura de shapefile de prescrição variável',
+      'Modo anti-deriva automático com análise de vento e temperatura em tempo real',
+      'Autolimpeza do circuito hidráulico em 30 segundos entre produtos',
+      'Telemetria de volume aplicado com mapa de aplicação exportável',
+      'Compatível com biologicos e fertilizantes foliares',
+    ],
   },
+
+  /* ── CARREGADEIRAS ───────────────────────────────────────────────────── */
   {
     id: 'cl300', cat: 'loader',
     name: 'CL-300 LOADER',
-    desc: 'Carregadeira elétrica compacta e silenciosa para operações em galpões e silos.',
-    img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80',
+    tagline: 'Operação silenciosa. Produtividade máxima.',
+    desc: 'Carregadeira elétrica compacta e silenciosa para operações em galpões, silos e armazéns. Zero emissão em ambientes fechados.',
+    img: imgUrl('loader_main', 900),
+    images: [
+      { src: imgUrl('loader_main', 1400), label: 'Vista Principal', angle: 'Frontal 3/4' },
+      { src: imgUrl('loader_bucket', 1400), label: 'Vista Lateral', angle: 'Perfil com Caçamba' },
+      { src: imgUrl('loader_work', 1400), label: 'Vista Traseira', angle: 'Cabine' },
+      { src: imgUrl('loader_silo', 1400), label: 'Vista Superior', angle: 'Pátio' },
+      { src: imgUrl('loader_ind', 1400), label: 'Em Operação', angle: 'Armazém' },
+      { src: imgUrl('loader_night', 1400), label: 'Operação Noturna', angle: 'Industrial' },
+    ],
     power: '160 kW', range: '16h', charge: '1.5h',
-    price: 'R$ 320.000',
-    badge: null,
+    price: 'R$ 320.000', badge: null,
     specs: {
-      'Potência': '160 kW',
-      'Capacidade': '6 t',
-      'Altura de descarga': '5,2 m',
-      'Autonomia': '16h',
+      'Potência': '160 kW (218 cv)',
+      'Capacidade operacional': '6 t por ciclo',
+      'Altura máxima de descarga': '5,2 m',
+      'Autonomia': '16h de operação contínua',
+      'Bateria': '140 kWh LFP',
+      'Recarga ultrarrápida': '100 kW DC (1,5h)',
+      'Nível de ruído': '< 65 dB (operação normal)',
+      'Controle de carga': 'Pesagem dinâmica integrada ±0,5%',
+      'Câmera': '360° com visão noturna IR',
+      'Grau de proteção': 'IP65 — apto para ambientes com pó',
     },
-    features: ['Zero emissão em ambientes fechados', 'Recarga ultrarrápida', 'Câmera 360°'],
+    features: [
+      'Zero emissão e operação silenciosa (<65 dB) para ambientes fechados',
+      'Sistema de pesagem dinâmica integrada com precisão de ±0,5%',
+      'Câmera 360° com visão noturna infravermelha para operação 24h',
+      'Recarga ultrarrápida DC de 100 kW — ciclo completo em 1,5h',
+      'Proteção IP65 para ambientes com poeira de grãos e fertilizantes',
+      'Controle de altura automatizado para empilhamento preciso',
+    ],
   },
+
+  /* ── ESCAVADEIRAS ────────────────────────────────────────────────────── */
   {
     id: 'ex500', cat: 'excavator',
     name: 'EX-500 DIG',
-    desc: 'Escavadeira elétrica de médio porte para obras rurais e terraplenagem.',
-    img: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=800&q=80',
+    tagline: 'Terraplenagem elétrica de alta performance.',
+    desc: 'Escavadeira elétrica de médio porte para obras rurais, terraplenagem e construção de reservatórios em propriedades agrícolas.',
+    img: imgUrl('excav_main', 900),
+    images: [
+      { src: imgUrl('excav_main', 1400), label: 'Vista Principal', angle: 'Frontal' },
+      { src: imgUrl('excav_work', 1400), label: 'Vista Lateral', angle: 'Braço Estendido' },
+      { src: imgUrl('excav_rural', 1400), label: 'Vista Traseira', angle: 'Contrapeso' },
+      { src: imgUrl('excav_earth', 1400), label: 'Vista Superior', angle: 'Aérea' },
+      { src: imgUrl('excav_close', 1400), label: 'Em Operação', angle: 'Obra Rural' },
+      { src: imgUrl('excav_site', 1400), label: 'Ambiente Industrial', angle: 'Canteiro' },
+    ],
     power: '280 kW', range: '8h', charge: '3.5h',
-    price: 'R$ 750.000',
-    badge: null,
+    price: 'R$ 750.000', badge: null,
     specs: {
-      'Potência': '280 kW',
+      'Potência': '280 kW (380 cv)',
       'Capacidade da caçamba': '1,8 m³',
-      'Profundidade máx.': '6,8 m',
-      'Autonomia': '8h',
+      'Profundidade máxima': '6,8 m',
+      'Alcance máximo': '10,2 m',
+      'Força de escavação': '180 kN',
+      'Autonomia': '8h de operação pesada',
+      'Bateria': '240 kWh LFP',
+      'Recarga rápida': '100 kW DC (3,5h)',
+      'Sistema hidráulico': 'Eletro-hidráulico de alta eficiência',
+      'Rotação da lança': '360° contínuos',
     },
-    features: ['Sistema hidráulico elétrico de alta eficiência', 'Pesagem de caçamba integrada', 'Modo eco automático'],
+    features: [
+      'Sistema hidráulico eletro-hidráulico com recuperação de energia na descida do braço',
+      'Pesagem de caçamba integrada para controle de volume escavado',
+      'Modo eco automático com redução de consumo de até 35% em ciclos leves',
+      'Rastreamento GPS de posição do braço para controle de profundidade',
+      'Câmera 360° com monitor de 7" no interior da cabine ROPS/FOPS',
+      'Compatível com implementos hidráulicos de terceiros (circuito auxiliar)',
+    ],
   },
+
+  /* ── EMPILHADEIRAS ───────────────────────────────────────────────────── */
   {
     id: 'fk200', cat: 'forklift',
     name: 'FK-200 LIFT',
-    desc: 'Empilhadeira elétrica para armazéns e cooperativas agrícolas.',
-    img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+    tagline: 'Armazéns mais inteligentes. Operadores mais seguros.',
+    desc: 'Empilhadeira elétrica para armazéns de grãos, cooperativas agrícolas e frigoríficos. Operação silenciosa e zero emissão.',
+    img: imgUrl('fork_main', 900),
+    images: [
+      { src: imgUrl('fork_main', 1400), label: 'Vista Principal', angle: 'Frontal' },
+      { src: imgUrl('fork_work', 1400), label: 'Vista Lateral', angle: 'Mástil Elevado' },
+      { src: imgUrl('fork_silo', 1400), label: 'Vista Traseira', angle: 'Contrapeso' },
+      { src: imgUrl('fork_coop', 1400), label: 'Vista Superior', angle: 'Corredor' },
+      { src: imgUrl('fork_bags', 1400), label: 'Em Operação', angle: 'Carga de Sacaria' },
+      { src: imgUrl('fork_wide', 1400), label: 'Armazém', angle: 'Grande Escala' },
+    ],
     power: '60 kW', range: '12h', charge: '1h',
-    price: 'R$ 195.000',
-    badge: null,
+    price: 'R$ 195.000', badge: null,
     specs: {
       'Potência': '60 kW',
-      'Carga máx.': '5 t',
-      'Altura máx.': '7 m',
-      'Autonomia': '12h',
+      'Capacidade de carga': '5 t',
+      'Altura máxima de elevação': '7 m',
+      'Autonomia': '12h de operação',
+      'Bateria': '48V / 840 Ah (LFP)',
+      'Recarga rápida': '60 kW DC (1h)',
+      'Velocidade com carga': '14 km/h',
+      'Nível de ruído': '< 60 dB',
+      'Raio de giro': '2,9 m',
+      'Grau de proteção': 'IP54',
     },
-    features: ['Operação silenciosa', 'Sensor de peso automático', 'Câmera de ré'],
+    features: [
+      'Operação com menos de 60 dB — ideal para turnos noturnos',
+      'Sensor de peso integrado com alerta de sobrecarga em tempo real',
+      'Câmera de ré HD com linhas de guia dinâmicas para manobras seguras',
+      'Sistema de estabilidade ativa para pisos irregulares de armazéns',
+      'Recarga rápida 60 kW DC — ciclo completo em 1 hora',
+      'Display 5" com telemetria de carga, temperatura e autonomia',
+    ],
   },
 ];
 
@@ -818,24 +1075,29 @@ function renderHome(container) {
       </div>
     </section>
 
-    <!-- Showcase -->
-    <div class="showcase-split">
+    <!-- VTX-9000X Flagship Showcase -->
+    <div class="showcase-split vtx-showcase">
       <div class="showcase-img">
-        <img src="https://images.unsplash.com/photo-1591093468677-c5a9f77aec5a?w=900&q=80" alt="VX-900 PRO" loading="lazy">
+        <img src="${imgUrl('tractor_hero', 1200)}" alt="VOLTRAX VTX-9000X" loading="lazy">
+        <div class="showcase-img-badge">
+          <span>Novo</span>
+          <strong>VTX-9000X</strong>
+        </div>
       </div>
       <div class="showcase-body">
-        <div class="section-eyebrow">Destaque</div>
-        <h2 class="section-title">VX-900 PRO</h2>
-        <p class="section-sub">O trator elétrico mais potente do Brasil. 480 kW, 18 horas de autonomia e IA de condução autônoma nível 3.</p>
+        <div class="section-eyebrow">Produto Principal</div>
+        <h2 class="section-title">VTX-9000X</h2>
+        <p class="showcase-tagline">Performance absoluta. Zero compromisso.</p>
+        <p class="section-sub">O trator elétrico mais avançado do Brasil. AutoDrive Nível 4, 640 kW, 22 horas de autonomia e carregamento solar integrado.</p>
         <div class="showcase-specs">
-          ${[['Potência','480 kW','650 cv'],['Autonomia','18 h','Carga contínua'],['Bateria','420 kWh','LFP'],['Recarga','2,5 h','150 kW DC']].map(([l,v,u])=>`
+          ${[['Potência','640 kW','870 cv'],['Autonomia','22 h','Carga contínua'],['Bateria','520 kWh','LFP Gen III'],['Solar','18 kWp','Integrado']].map(([l,v,u])=>`
             <div class="spec-row">
               <span class="spec-label">${l}</span>
               <span class="spec-value">${v} <span>${u}</span></span>
             </div>`).join('')}
         </div>
-        <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="navigate('/vehicles',{cat:'tractor'})">Ver Detalhes ${ICON.arrow}</button>
+        <div style="display:flex;gap:1rem;margin-top:1.75rem;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-lg" onclick="openVehicleModal('vtx9000x')">Ver Produto ${ICON.arrow}</button>
           <button class="btn btn-secondary" onclick="navigate('/showroom')">Showroom 3D</button>
         </div>
       </div>
@@ -928,46 +1190,133 @@ function renderVehicles(container, params = {}) {
 window.openVehicleModal = function(id) {
   const v = VEHICLES.find(x => x.id === id);
   if (!v) return;
+
+  const imgs = v.images && v.images.length ? v.images : [{ src: v.img, label: 'Vista Principal', angle: '' }];
+  let activeImg = 0;
+
+  function galleryHTML() {
+    return `
+      <div class="pv-gallery" id="pvGallery">
+        <div class="pv-gallery-main">
+          <img src="${imgs[activeImg].src}" alt="${v.name}" id="pvMainImg" loading="eager">
+          <div class="pv-gallery-angle" id="pvAngle">${imgs[activeImg].angle}</div>
+          ${imgs.length > 1 ? `
+          <button class="pv-nav pv-prev" id="pvPrev" aria-label="Anterior">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="pv-nav pv-next" id="pvNext" aria-label="Próxima">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>` : ''}
+        </div>
+        <div class="pv-thumbs">
+          ${imgs.map((img, i) => `
+            <button class="pv-thumb${i === activeImg ? ' active' : ''}" data-idx="${i}" aria-label="${img.label}">
+              <img src="${img.src.replace('w=1400', 'w=200').replace('q=88', 'q=60')}" alt="${img.label}" loading="lazy">
+              <span>${img.label}</span>
+            </button>`).join('')}
+        </div>
+      </div>`;
+  }
+
   const html = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;">
-      <div>
-        <img src="${v.img}" alt="${v.name}" style="width:100%;border-radius:var(--r-lg);object-fit:cover;aspect-ratio:4/3;">
-      </div>
-      <div>
-        <div class="product-cat">${catLabel(v.cat)}</div>
-        <h2 class="product-name" style="font-size:2rem;">${v.name}</h2>
-        <p style="color:var(--clr-text2);margin-bottom:1.5rem;line-height:1.7;">${v.desc}</p>
-        <div class="product-specs-quick">
-          <div class="qs"><div class="qs-label">Potência</div><div class="qs-value">${v.power}</div></div>
-          <div class="qs"><div class="qs-label">Autonomia</div><div class="qs-value">${v.range}<span class="qs-unit">h</span></div></div>
-          <div class="qs"><div class="qs-label">Recarga</div><div class="qs-value">${v.charge}<span class="qs-unit">h</span></div></div>
-          <div class="qs"><div class="qs-label">Categoria</div><div class="qs-value" style="font-size:1rem;font-family:var(--ff-body);">${catLabel(v.cat)}</div></div>
+    <div class="pv-layout">
+
+      <!-- Left: gallery -->
+      <div id="pvGalleryWrap">${galleryHTML()}</div>
+
+      <!-- Right: info -->
+      <div class="pv-info">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;">
+          <div class="product-cat">${catLabel(v.cat)}</div>
+          ${v.badge ? `<span class="vehicle-card-badge" style="position:static;">${v.badge}</span>` : ''}
         </div>
-        <div class="product-price-block">
-          <div class="product-price-label">Preço base</div>
-          <div class="product-price-value">${v.price}</div>
+        <h2 class="pv-name">${v.name}</h2>
+        ${v.tagline ? `<div class="pv-tagline">${v.tagline}</div>` : ''}
+        <p class="pv-desc">${v.desc}</p>
+
+        <div class="pv-quick-stats">
+          <div class="pv-stat">
+            <div class="pv-stat-val">${v.power.split(' ')[0]}<span>${v.power.split(' ').slice(1).join(' ')}</span></div>
+            <div class="pv-stat-lbl">Potência</div>
+          </div>
+          <div class="pv-stat">
+            <div class="pv-stat-val">${v.range}<span>h</span></div>
+            <div class="pv-stat-lbl">Autonomia</div>
+          </div>
+          <div class="pv-stat">
+            <div class="pv-stat-val">${v.charge}<span>h</span></div>
+            <div class="pv-stat-lbl">Recarga</div>
+          </div>
         </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="closeModal();navigate('/contact')">Solicitar Proposta</button>
-          <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
+
+        <!-- Tabs -->
+        <div class="pv-tabs">
+          <button class="pv-tab active" data-tab="specs">Especificações</button>
+          <button class="pv-tab" data-tab="features">Recursos</button>
+        </div>
+
+        <div id="pvTabContent">
+          <div data-panel="specs" class="pv-panel">
+            <div class="pv-spec-list">
+              ${Object.entries(v.specs || {}).map(([k, val]) => `
+                <div class="pv-spec-row">
+                  <span class="pv-spec-key">${k}</span>
+                  <span class="pv-spec-val">${val}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+          <div data-panel="features" class="pv-panel" style="display:none">
+            <ul class="pv-features-list">
+              ${(v.features || []).map(f => `
+                <li><span class="pv-feat-check">✓</span>${f}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div class="pv-price-row">
+          <div>
+            <div class="pv-price-label">Preço base</div>
+            <div class="pv-price">${v.price}</div>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="closeModal();navigate('/contact')">Solicitar Proposta</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Fechar</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="divider"></div>
-    <div>
-      <h3 style="font-family:var(--ff-display);font-weight:700;margin-bottom:1rem;">Especificações Técnicas</h3>
-      <div class="tab-spec-list">
-        ${Object.entries(v.specs||{}).map(([k,val])=>`<div class="tab-spec-row"><span class="tab-spec-key">${k}</span><span class="tab-spec-val">${val}</span></div>`).join('')}
-      </div>
-    </div>
-    ${v.features?.length ? `
-    <div style="margin-top:1.5rem;">
-      <h3 style="font-family:var(--ff-display);font-weight:700;margin-bottom:1rem;">Recursos Incluídos</h3>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;">
-        ${v.features.map(f=>`<li style="display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:var(--clr-text2);"><span style="color:var(--clr-accent);font-weight:700;">✓</span>${f}</li>`).join('')}
-      </ul>
-    </div>` : ''}`;
+
+    </div>`;
+
   openModal(html);
+
+  // ── Gallery interactions ─────────────────────────────────────────────
+  const box = document.getElementById('modal-content');
+
+  function goTo(idx) {
+    activeImg = (idx + imgs.length) % imgs.length;
+    const mainImg = box.querySelector('#pvMainImg');
+    const angle   = box.querySelector('#pvAngle');
+    if (mainImg) { mainImg.style.opacity = '0'; setTimeout(() => { mainImg.src = imgs[activeImg].src; mainImg.style.opacity = '1'; }, 150); }
+    if (angle)   angle.textContent = imgs[activeImg].angle;
+    box.querySelectorAll('.pv-thumb').forEach((t, i) => t.classList.toggle('active', i === activeImg));
+  }
+
+  box.querySelector('#pvPrev')?.addEventListener('click', () => goTo(activeImg - 1));
+  box.querySelector('#pvNext')?.addEventListener('click', () => goTo(activeImg + 1));
+  box.querySelectorAll('.pv-thumb').forEach(t => {
+    t.addEventListener('click', () => goTo(+t.dataset.idx));
+  });
+
+  // ── Tab interactions ─────────────────────────────────────────────────
+  box.querySelectorAll('.pv-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      box.querySelectorAll('.pv-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      box.querySelectorAll('.pv-panel').forEach(p => {
+        p.style.display = p.dataset.panel === tab.dataset.tab ? '' : 'none';
+      });
+    });
+  });
 };
 
 /* ─── TECHNOLOGY ─────────────────────────────────────────────────────────── */
@@ -975,7 +1324,7 @@ function renderTechnology(container) {
   container.innerHTML = `
     <div class="tech-hero-split">
       <div class="tech-hero-img">
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80" alt="Tecnologia" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=88&auto=format&fit=crop" alt="Tecnologia" loading="lazy">
       </div>
       <div class="tech-hero-body">
         <div class="section-eyebrow">Inovação</div>
@@ -1325,15 +1674,18 @@ function renderShowroom(container) {
         </div>
         <div class="showroom-grid">
           ${[
-            {img:'https://images.unsplash.com/photo-1591093468677-c5a9f77aec5a?w=900&q=80',label:'VX-900 PRO — Vista lateral'},
-            {img:'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&q=80',label:'VX-600 — Campo'},
-            {img:'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600&q=80',label:'CH-800 — Colheita'},
-            {img:'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=80',label:'SP-400 — Pulverização'},
-            {img:'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=600&q=80',label:'CL-300 — Galpão'},
-          ].map(({img,label})=>`
+            {img:imgUrl('tractor_hero',1400), vehicle:'VTX-9000X', label:'Vista Frontal 3/4'},
+            {img:imgUrl('tractor_side',900), vehicle:'VX-900 PRO', label:'Em Operação'},
+            {img:imgUrl('harvest_main',900), vehicle:'CH-800 HARVEST', label:'Colheita de Soja'},
+            {img:imgUrl('spray_main',900), vehicle:'SP-400 SPRAY', label:'Pulverização de Precisão'},
+            {img:imgUrl('loader_main',900), vehicle:'CL-300 LOADER', label:'Armazém Industrial'},
+          ].map(({img,vehicle,label})=>`
             <div class="showroom-grid-item">
-              <img src="${img}" alt="${label}" loading="lazy">
-              <div class="showroom-grid-item-overlay"><span class="showroom-grid-label">${label}</span></div>
+              <img src="${img}" alt="${vehicle} — ${label}" loading="lazy">
+              <div class="showroom-grid-item-overlay">
+                <span class="showroom-grid-vehicle">${vehicle}</span>
+                <span class="showroom-grid-label">${label}</span>
+              </div>
             </div>`).join('')}
         </div>
       </div>
