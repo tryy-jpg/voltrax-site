@@ -328,20 +328,50 @@ function initNavbar() {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  // Hamburger
-  const ham = document.getElementById('hamburger');
-  const mob = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    mob.classList.toggle('open');
-    document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+  // ── Drawer ──────────────────────────────────────────────────────────────
+  const ham        = document.getElementById('hamburger');
+  const drawer     = document.getElementById('drawer');
+  const overlay    = document.getElementById('drawerOverlay');
+  const closeBtn   = document.getElementById('drawerClose');
+
+  function openDrawer() {
+    ham.classList.add('open');
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    updateNavAuth(); // refresh drawer user section
+    // Sync drawer cart badge
+    const cartCount = STATE.cart.reduce((s, i) => s + i.qty, 0);
+    const badge = document.getElementById('drawerCartBadge');
+    if (badge) badge.textContent = cartCount > 0 ? cartCount : '';
+  }
+
+  function closeDrawer() {
+    ham.classList.remove('open');
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (ham)      ham.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (overlay)  overlay.addEventListener('click', closeDrawer);
+
+  // Drawer lang/theme buttons
+  const drawerThemeBtn = document.getElementById('drawerThemeBtn');
+  const drawerLangBtn  = document.getElementById('drawerLangBtn');
+  if (drawerThemeBtn) drawerThemeBtn.addEventListener('click', toggleTheme);
+  if (drawerLangBtn)  drawerLangBtn.addEventListener('click', () => {
+    toggleLang();
+    const lbl = document.getElementById('drawerLangLabel');
+    if (lbl) lbl.textContent = STATE.lang.toUpperCase();
   });
 
-  // Search
-  const searchToggle = document.getElementById('searchToggle');
-  const searchBar    = document.getElementById('searchBar');
-  const searchInput  = document.getElementById('searchInput');
-  const searchClose  = document.getElementById('searchClose');
+  // ── Search ──────────────────────────────────────────────────────────────
+  const searchToggle  = document.getElementById('searchToggle');
+  const searchBar     = document.getElementById('searchBar');
+  const searchInput   = document.getElementById('searchInput');
+  const searchClose   = document.getElementById('searchClose');
   const searchResults = document.getElementById('searchResults');
 
   searchToggle.addEventListener('click', () => {
@@ -358,23 +388,81 @@ function initNavbar() {
       searchBar.classList.remove('open');
       searchInput.value = '';
       searchResults.innerHTML = '';
+      closeAvatarDropdown();
     }
   });
   searchInput.addEventListener('input', debounce(() => doSearch(searchInput.value, searchResults), 200));
 
-  // Theme
+  // ── Theme / Lang ────────────────────────────────────────────────────────
   document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-  // Lang
   document.getElementById('langToggle').addEventListener('click', toggleLang);
 
-  // Cart btn
+  // ── Cart ────────────────────────────────────────────────────────────────
   document.getElementById('cartBtn').addEventListener('click', () => navigate('/cart'));
 
-  // Delegate nav routes
+  // ── Avatar dropdown ─────────────────────────────────────────────────────
+  const avatarBtn      = document.getElementById('navAvatarBtn');
+  const avatarDropdown = document.getElementById('avatarDropdown');
+
+  function openAvatarDropdown() {
+    avatarDropdown.classList.add('open');
+    avatarBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeAvatarDropdown() {
+    if (avatarDropdown) {
+      avatarDropdown.classList.remove('open');
+      if (avatarBtn) avatarBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  if (avatarBtn) {
+    avatarBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = avatarDropdown.classList.contains('open');
+      if (isOpen) closeAvatarDropdown();
+      else openAvatarDropdown();
+    });
+  }
+
+  // Dropdown item routing
+  if (avatarDropdown) {
+    avatarDropdown.addEventListener('click', e => {
+      const item = e.target.closest('[data-route]');
+      if (item) {
+        e.preventDefault();
+        closeAvatarDropdown();
+        navigate(item.dataset.route);
+        return;
+      }
+    });
+  }
+
+  // Logout from dropdown
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  if (navLogoutBtn) {
+    navLogoutBtn.addEventListener('click', () => {
+      STATE.user = null;
+      persistUser();
+      updateNavAuth();
+      closeAvatarDropdown();
+      showToast('Sessão encerrada.', '');
+      navigate('/home');
+    });
+  }
+
+  // Close avatar dropdown on outside click
+  document.addEventListener('click', e => {
+    if (avatarDropdown && !document.getElementById('navAvatarWrap')?.contains(e.target)) {
+      closeAvatarDropdown();
+    }
+  });
+
+  // ── Delegate nav routes ─────────────────────────────────────────────────
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-route]');
     if (!a) return;
+    // Don't double-handle avatar dropdown items
+    if (a.closest('#avatarDropdown')) return;
     e.preventDefault();
     const path = a.dataset.route;
     const cat  = a.dataset.cat;
@@ -458,8 +546,10 @@ function updateCartQty(id, delta) {
 function updateCartCount() {
   const count = STATE.cart.reduce((s, i) => s + i.qty, 0);
   const el = document.getElementById('cartCount');
-  el.textContent = count;
-  el.classList.toggle('visible', count > 0);
+  if (el) { el.textContent = count; el.classList.toggle('visible', count > 0); }
+  // Sync drawer badge too
+  const badge = document.getElementById('drawerCartBadge');
+  if (badge) badge.textContent = count > 0 ? count : '';
   localStorage.setItem('vx-cart', JSON.stringify(STATE.cart));
 }
 function loadCart() {
@@ -502,10 +592,18 @@ function initReveal() {
 
 /* ─── CLOSE ALL ──────────────────────────────────────────────────────────── */
 function closeAll() {
-  document.getElementById('hamburger').classList.remove('open');
-  document.getElementById('mobileMenu').classList.remove('open');
-  document.getElementById('searchBar').classList.remove('open');
+  const ham     = document.getElementById('hamburger');
+  const drawer  = document.getElementById('drawer');
+  const overlay = document.getElementById('drawerOverlay');
+  if (ham)     ham.classList.remove('open');
+  if (drawer)  drawer.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
   document.body.style.overflow = '';
+  const searchBar = document.getElementById('searchBar');
+  if (searchBar) searchBar.classList.remove('open');
+  // Close avatar dropdown
+  const avatarDropdown = document.getElementById('avatarDropdown');
+  if (avatarDropdown) avatarDropdown.classList.remove('open');
 }
 
 /* ─── HELPERS ─────────────────────────────────────────────────────────────── */
@@ -513,6 +611,97 @@ function debounce(fn, ms) {
   let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
 }
 function fmtPrice(str) { return str; }
+
+/* ─── USER HELPERS ──────────────────────────────────────────────────────────── */
+function getInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function persistUser() {
+  if (STATE.user) {
+    try { localStorage.setItem('vx-user', JSON.stringify(STATE.user)); } catch {}
+  } else {
+    try { localStorage.removeItem('vx-user'); } catch {}
+  }
+}
+
+function restoreUser() {
+  try {
+    const raw = localStorage.getItem('vx-user');
+    if (raw) {
+      const u = JSON.parse(raw);
+      if (u && u.email) {
+        STATE.user = u;
+        // Recalculate initials in case name changed
+        STATE.user.initials = getInitials(u.name || u.email);
+      }
+    }
+  } catch {}
+}
+
+function updateNavAuth() {
+  const loginBtn = document.getElementById('loginNavBtn');
+  const avatarWrap = document.getElementById('navAvatarWrap');
+  const avatarInitials = document.getElementById('navAvatarInitials');
+  const dropInitials = document.getElementById('avatarDropInitials');
+  const dropName = document.getElementById('avatarDropName');
+  const dropEmail = document.getElementById('avatarDropEmail');
+  const drawerUserSection = document.getElementById('drawerUserSection');
+  const drawerCartBadge = document.getElementById('drawerCartBadge');
+
+  if (STATE.user) {
+    const initials = getInitials(STATE.user.name || STATE.user.email);
+    STATE.user.initials = initials;
+
+    // Show avatar, hide login
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (avatarWrap) avatarWrap.style.display = 'flex';
+    if (avatarInitials) avatarInitials.textContent = initials;
+    if (dropInitials)   dropInitials.textContent   = initials;
+    if (dropName)       dropName.textContent        = STATE.user.name || '';
+    if (dropEmail)      dropEmail.textContent       = STATE.user.email || '';
+
+    // Drawer user section
+    if (drawerUserSection) {
+      drawerUserSection.innerHTML = `
+        <div class="drawer-user-card" data-route="/account">
+          <div class="drawer-user-avatar">${initials}</div>
+          <div>
+            <div class="drawer-user-name">${STATE.user.name || 'Usuário'}</div>
+            <div class="drawer-user-email">${STATE.user.email || ''}</div>
+          </div>
+          <div class="drawer-user-arrow">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>`;
+    }
+  } else {
+    // Show login, hide avatar
+    if (loginBtn) loginBtn.style.display = '';
+    if (avatarWrap) avatarWrap.style.display = 'none';
+
+    // Drawer login prompt
+    if (drawerUserSection) {
+      drawerUserSection.innerHTML = `
+        <div class="drawer-login-prompt" data-route="/login">
+          <div>
+            <div class="drawer-login-label">Entrar na VOLTRAX</div>
+            <div class="drawer-login-sub">Acesse pedidos, frota e mais</div>
+          </div>
+          <div class="drawer-login-icon">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M8 17H4a1 1 0 01-1-1V4a1 1 0 011-1h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 14l4-4-4-4M17 10H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>`;
+    }
+  }
+
+  // Cart badge in drawer
+  const cartCount = STATE.cart.reduce((s, i) => s + i.qty, 0);
+  if (drawerCartBadge) drawerCartBadge.textContent = cartCount > 0 ? cartCount : '';
+}
 
 /* ─── SVG ICONS ──────────────────────────────────────────────────────────── */
 const ICON = {
@@ -1784,7 +1973,10 @@ function renderLogin(container) {
         const email = container.querySelector('#aEmail').value.trim();
         const pwd   = container.querySelector('#aPwd').value;
         if (!email || !pwd) { showToast('Preencha e-mail e senha.', 'error'); return; }
-        STATE.user = { name: 'Produtor VOLTRAX', email, initials: email[0].toUpperCase() };
+        const name = 'Produtor VOLTRAX';
+        STATE.user = { name, email, initials: getInitials(name) };
+        persistUser();
+        updateNavAuth();
         showToast('Login realizado com sucesso!', 'success');
         setTimeout(() => navigate('/account'), 600);
       });
@@ -1798,7 +1990,9 @@ function renderLogin(container) {
         const pwd   = container.querySelector('#rPwd').value;
         if (!name || !email || !pwd) { showToast('Preencha todos os campos.', 'error'); return; }
         if (pwd.length < 8) { showToast('Senha muito curta. Mínimo 8 caracteres.', 'error'); return; }
-        STATE.user = { name, email, initials: name[0].toUpperCase() };
+        STATE.user = { name, email, initials: getInitials(name) };
+        persistUser();
+        updateNavAuth();
         showToast('Conta criada! Bem-vindo à VOLTRAX.', 'success');
         setTimeout(() => navigate('/account'), 600);
       });
@@ -1812,6 +2006,8 @@ function renderLogin(container) {
 /* ─── ACCOUNT ────────────────────────────────────────────────────────────── */
 function renderAccount(container) {
   if (!STATE.user) { navigate('/login'); return; }
+
+  const initials = getInitials(STATE.user.name || STATE.user.email);
 
   const panels = {
     orders: `
@@ -1833,6 +2029,7 @@ function renderAccount(container) {
             </div>
           </div>`).join('')}
       </div>`,
+
     fleet: `
       <h2 style="font-family:var(--ff-display);font-weight:800;font-size:1.5rem;margin-bottom:1.5rem;">Minha Frota</h2>
       <div class="telemetry-preview">
@@ -1846,15 +2043,77 @@ function renderAccount(container) {
         </div>
       </div>
       <p style="font-size:.85rem;color:var(--clr-text3);margin-top:1.5rem;">Para adicionar veículos à frota, entre em contato com o suporte.</p>`,
+
     profile: `
-      <h2 style="font-family:var(--ff-display);font-weight:800;font-size:1.5rem;margin-bottom:1.5rem;">Meu Perfil</h2>
-      <div style="display:flex;flex-direction:column;gap:1.25rem;max-width:480px;">
-        <div class="form-group"><label class="form-label">Nome</label><input class="form-input" type="text" value="${STATE.user.name}"></div>
-        <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" value="${STATE.user.email}"></div>
-        <div class="form-group"><label class="form-label">Empresa / Fazenda</label><input class="form-input" type="text" placeholder="Nome da empresa"></div>
-        <div class="form-group"><label class="form-label">Estado</label><input class="form-input" type="text" placeholder="UF"></div>
-        <button class="btn btn-primary" onclick="showToast('Perfil atualizado!','success')">Salvar alterações</button>
+      <!-- Profile Hero -->
+      <div class="profile-hero">
+        <div class="profile-hero-avatar">${initials}</div>
+        <div class="profile-hero-info">
+          <div class="profile-hero-name">${STATE.user.name || 'Usuário'}</div>
+          <div class="profile-hero-email">${STATE.user.email || ''}</div>
+          <div class="profile-hero-badge">Produtor VOLTRAX</div>
+        </div>
+      </div>
+
+      <!-- Personal Info Section -->
+      <div class="profile-section">
+        <div class="profile-section-header">
+          <span class="profile-section-title">Informações Pessoais</span>
+          <button class="profile-section-action" id="profileSaveBtn">Salvar</button>
+        </div>
+        <div class="profile-section-body">
+          <div class="profile-field-row">
+            <span class="profile-field-label">Nome</span>
+            <input class="profile-field-input" id="profileName" type="text" value="${STATE.user.name || ''}" placeholder="Seu nome">
+          </div>
+          <div class="profile-field-row">
+            <span class="profile-field-label">E-mail</span>
+            <input class="profile-field-input" id="profileEmail" type="email" value="${STATE.user.email || ''}" placeholder="email@exemplo.com">
+          </div>
+          <div class="profile-field-row">
+            <span class="profile-field-label">Empresa</span>
+            <input class="profile-field-input" id="profileCompany" type="text" placeholder="Nome da fazenda ou empresa">
+          </div>
+          <div class="profile-field-row">
+            <span class="profile-field-label">Estado</span>
+            <input class="profile-field-input" id="profileState" type="text" placeholder="UF">
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Section -->
+      <div class="profile-section">
+        <div class="profile-section-header">
+          <span class="profile-section-title">Segurança</span>
+        </div>
+        <div class="profile-section-body">
+          <div class="profile-field-row">
+            <span class="profile-field-label">Senha</span>
+            <span class="profile-field-value" style="color:var(--clr-text3);">••••••••••</span>
+            <button class="profile-edit-btn" id="changePwdBtn">Alterar</button>
+          </div>
+          <div class="profile-field-row">
+            <span class="profile-field-label">2FA</span>
+            <span class="profile-field-value" style="color:var(--clr-text3);">Não ativado</span>
+            <button class="profile-edit-btn">Ativar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="profile-section" style="border-color:rgba(229,57,53,0.15);">
+        <div class="profile-section-header" style="border-bottom-color:rgba(229,57,53,0.1);">
+          <span class="profile-section-title" style="color:#e53935;">Zona de Perigo</span>
+        </div>
+        <div class="profile-section-body">
+          <div class="profile-field-row">
+            <span class="profile-field-label">Conta</span>
+            <span class="profile-field-value" style="font-size:.82rem;color:var(--clr-text3);">Desativar ou excluir permanentemente</span>
+            <button class="profile-edit-btn" style="color:#e53935;border-color:rgba(229,57,53,0.25);">Excluir</button>
+          </div>
+        </div>
       </div>`,
+
     settings: `
       <h2 style="font-family:var(--ff-display);font-weight:800;font-size:1.5rem;margin-bottom:1.5rem;">Configurações</h2>
       <div style="display:flex;flex-direction:column;gap:1.5rem;max-width:480px;">
@@ -1874,8 +2133,35 @@ function renderAccount(container) {
 
   let activePanel = 'orders';
 
-  function buildPanel() {
-    return panels[activePanel] || '';
+  function buildPanel() { return panels[activePanel] || ''; }
+
+  function attachPanelEvents() {
+    // Profile save
+    const saveBtn = container.querySelector('#profileSaveBtn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const name  = container.querySelector('#profileName')?.value.trim();
+        const email = container.querySelector('#profileEmail')?.value.trim();
+        if (name)  STATE.user.name  = name;
+        if (email) STATE.user.email = email;
+        STATE.user.initials = getInitials(STATE.user.name || STATE.user.email);
+        persistUser();
+        updateNavAuth();
+        showToast('Perfil atualizado!', 'success');
+        // Refresh sidebar avatar
+        const sideAvatar = container.querySelector('.account-avatar');
+        if (sideAvatar) sideAvatar.textContent = STATE.user.initials;
+        const sideName  = container.querySelector('.account-name');
+        if (sideName)   sideName.textContent   = STATE.user.name;
+        const sideEmail = container.querySelector('.account-email');
+        if (sideEmail)  sideEmail.textContent  = STATE.user.email;
+      });
+    }
+    // Change pwd
+    const changePwd = container.querySelector('#changePwdBtn');
+    if (changePwd) {
+      changePwd.addEventListener('click', () => showToast('Funcionalidade em breve.', ''));
+    }
   }
 
   container.innerHTML = `
@@ -1888,7 +2174,7 @@ function renderAccount(container) {
       <div class="account-layout">
         <div class="account-sidebar">
           <div class="account-user">
-            <div class="account-avatar">${STATE.user.initials}</div>
+            <div class="account-avatar">${initials}</div>
             <div class="account-name">${STATE.user.name}</div>
             <div class="account-email">${STATE.user.email}</div>
           </div>
@@ -1909,15 +2195,20 @@ function renderAccount(container) {
       </div>
     </section>`;
 
+  attachPanelEvents();
+
   container.querySelector('#accountNav').addEventListener('click', e => {
     const item = e.target.closest('[data-panel]');
     if (item) {
       activePanel = item.dataset.panel;
       container.querySelectorAll('.account-nav-item').forEach(el => el.classList.toggle('active', el.dataset.panel === activePanel));
       container.querySelector('#accountPanel').innerHTML = buildPanel();
+      attachPanelEvents();
     }
     if (e.target.closest('#logoutBtn')) {
       STATE.user = null;
+      persistUser();
+      updateNavAuth();
       showToast('Sessão encerrada.', '');
       setTimeout(() => navigate('/home'), 600);
     }
@@ -1929,10 +2220,12 @@ function renderAccount(container) {
    ═══════════════════════════════════════════════════════════════════════════ */
 function init() {
   initTheme();
+  restoreUser();      // ← load saved user from localStorage FIRST
   initNavbar();
   initModal();
   loadCart();
   applyI18n();
+  updateNavAuth();    // ← apply avatar/login state after navbar exists
   initLoading();
 
   window.addEventListener('hashchange', () => {
