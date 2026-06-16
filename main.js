@@ -85,57 +85,57 @@ function applyI18n() {
 // Image sets: [main, side, rear, top/aerial, field-operation, industrial]
 const IMG = {
   // Tractors / Field ops
-  tractor_hero: 'https://images.unsplash.com/photo-1595872374038-a9c94e86440c',
-  tractor_side: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9',
-  tractor_field: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
-  tractor_aerial: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399',
-  tractor_sunset: 'https://images.unsplash.com/photo-1490129375591-2658831e8a98',
-  tractor_tech: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2',
-  tractor_work: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a',
-  tractor_rows: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b',
+  tractor_hero: '',
+  tractor_side: '',
+  tractor_field: '',
+  tractor_aerial: '',
+  tractor_sunset: '',
+  tractor_tech: '',
+  tractor_work: '',
+  tractor_rows: '',
   // Harvesters
-  harvest_main: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d',
-  harvest_field: 'https://images.unsplash.com/photo-1571543257034-de4fdb5b4a93',
-  harvest_aerial: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449',
-  harvest_grain: 'https://images.unsplash.com/photo-1543968396-0a4f47b4efc9',
-  harvest_golden: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b',
-  harvest_close: 'https://images.unsplash.com/photo-1415241053783-5cd89e1059dc',
+  harvest_main: '',
+  harvest_field: '',
+  harvest_aerial: '',
+  harvest_grain: '',
+  harvest_golden: '',
+  harvest_close: '',
   // Sprayer
-  spray_main: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449',
-  spray_boom: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc',
-  spray_drone: 'https://images.unsplash.com/photo-1568992688065-536aad8a12f6',
-  spray_aerial: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
-  spray_row: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b',
-  spray_tech: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2',
+  spray_main: '',
+  spray_boom: '',
+  spray_drone: '',
+  spray_aerial: '',
+  spray_row: '',
+  spray_tech: '',
   // Loaders / Industrial
-  loader_main: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
-  loader_work: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-  loader_bucket: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
-  loader_silo: 'https://images.unsplash.com/photo-1565008576549-57569a49371d',
-  loader_ind: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
-  loader_night: 'https://images.unsplash.com/photo-1486325212027-8081e485255e',
+  loader_main: '',
+  loader_work: '',
+  loader_bucket: '',
+  loader_silo: '',
+  loader_ind: '',
+  loader_night: '',
   // Excavator
-  excav_main: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1',
-  excav_work: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64',
-  excav_rural: 'https://images.unsplash.com/photo-1590496793929-36417d3117de',
-  excav_close: 'https://images.unsplash.com/photo-1581092162384-8987c1d64926',
-  excav_earth: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
-  excav_site: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  excav_main: '',
+  excav_work: '',
+  excav_rural: '',
+  excav_close: '',
+  excav_earth: '',
+  excav_site: '',
   // Forklift / Warehouse
-  fork_main: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d',
-  fork_work: 'https://images.unsplash.com/photo-1553413077-190dd305871c',
-  fork_silo: 'https://images.unsplash.com/photo-1565008576549-57569a49371d',
-  fork_coop: 'https://images.unsplash.com/photo-1565743624840-c29a8a1df28f',
-  fork_bags: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
-  fork_wide: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
+  fork_main: '',
+  fork_work: '',
+  fork_silo: '',
+  fork_coop: '',
+  fork_bags: '',
+  fork_wide: '',
   // Solar / Energy
-  solar_panels: 'https://images.unsplash.com/photo-1509391366360-2e959784a276',
-  solar_farm: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063',
-  solar_field: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e',
+  solar_panels: '',
+  solar_farm: '',
+  solar_field: '',
   // EV / Battery
-  ev_charge: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7',
-  battery_pack: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5',
-  battery_cell: 'https://images.unsplash.com/photo-1620714223084-8fcacc2dbe4d',
+  ev_charge: '',
+  battery_pack: '',
+  battery_cell: '',
 };
 
 function imgUrl(key, w=1200, q=88) {
@@ -461,15 +461,15 @@ const VEHICLES = [
 ];
 
 const MARKETPLACE_PRODUCTS = [
-  { id: 'bat1', cat: 'batteries', name: 'Bateria LFP 80 kWh', desc: 'Módulo de bateria para expansão de autonomia. Compatível com VX-600 e VX-900.', price: 'R$ 48.000', img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&q=80' },
-  { id: 'bat2', cat: 'batteries', name: 'Bateria LFP 40 kWh', desc: 'Módulo compacto para empilhadeiras e carregadeiras.', price: 'R$ 24.000', img: 'https://images.unsplash.com/photo-1620714223084-8fcacc2dbe4d?w=400&q=80' },
-  { id: 'sol1', cat: 'solar', name: 'Kit Solar 50 kWp', desc: 'Painel bifacial de alta eficiência com inversor dedicado. Para recarga em campo.', price: 'R$ 72.000', img: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&q=80' },
-  { id: 'sol2', cat: 'solar', name: 'Módulo Solar 480W', desc: 'Painel individual de alta performance para complementar o sistema.', price: 'R$ 980', img: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=400&q=80' },
-  { id: 'prt1', cat: 'parts', name: 'Controlador de Motor VX', desc: 'Controlador eletrônico de tração para série VX. Garantia 3 anos.', price: 'R$ 18.500', img: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80' },
-  { id: 'prt2', cat: 'parts', name: 'Sensor Telemetria IoT', desc: 'Kit de sensores para monitoramento remoto e diagnóstico preditivo.', price: 'R$ 3.200', img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80' },
-  { id: 'acc1', cat: 'accessories', name: 'Carregador Rápido 150kW', desc: 'Estação de recarga rápida DC para qualquer modelo da linha VX.', price: 'R$ 85.000', img: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=400&q=80' },
-  { id: 'acc2', cat: 'accessories', name: 'Cabo de Recarga CCS2', desc: 'Cabo industrial 5m para recarga rápida DC. Certificado IP67.', price: 'R$ 1.850', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
-  { id: 'mnt1', cat: 'maintenance', name: 'Plano Manutenção Anual', desc: 'Visitas técnicas periódicas, diagnóstico remoto e peças de desgaste incluídas.', price: 'R$ 28.000', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80' },
+  { id: 'bat1', cat: 'batteries', name: 'Bateria LFP 80 kWh', desc: 'Módulo de bateria para expansão de autonomia. Compatível com VX-600 e VX-900.', price: 'R$ 48.000', img: '' },
+  { id: 'bat2', cat: 'batteries', name: 'Bateria LFP 40 kWh', desc: 'Módulo compacto para empilhadeiras e carregadeiras.', price: 'R$ 24.000', img: '' },
+  { id: 'sol1', cat: 'solar', name: 'Kit Solar 50 kWp', desc: 'Painel bifacial de alta eficiência com inversor dedicado. Para recarga em campo.', price: 'R$ 72.000', img: '' },
+  { id: 'sol2', cat: 'solar', name: 'Módulo Solar 480W', desc: 'Painel individual de alta performance para complementar o sistema.', price: 'R$ 980', img: '' },
+  { id: 'prt1', cat: 'parts', name: 'Controlador de Motor VX', desc: 'Controlador eletrônico de tração para série VX. Garantia 3 anos.', price: 'R$ 18.500', img: '' },
+  { id: 'prt2', cat: 'parts', name: 'Sensor Telemetria IoT', desc: 'Kit de sensores para monitoramento remoto e diagnóstico preditivo.', price: 'R$ 3.200', img: '' },
+  { id: 'acc1', cat: 'accessories', name: 'Carregador Rápido 150kW', desc: 'Estação de recarga rápida DC para qualquer modelo da linha VX.', price: 'R$ 85.000', img: '' },
+  { id: 'acc2', cat: 'accessories', name: 'Cabo de Recarga CCS2', desc: 'Cabo industrial 5m para recarga rápida DC. Certificado IP67.', price: 'R$ 1.850', img: '' },
+  { id: 'mnt1', cat: 'maintenance', name: 'Plano Manutenção Anual', desc: 'Visitas técnicas periódicas, diagnóstico remoto e peças de desgaste incluídas.', price: 'R$ 28.000', img: '' },
 ];
 
 const BRANCHES = [
@@ -1993,10 +1993,11 @@ function renderAbout(container) {
       <div class="team-grid">
         ${[
           ['Felipe Haniel','CEO & Co-fundador',],
-          ['Jhonatan ','PEO & Co-fundador',],
+          ['Jhonatas ','PEO & Co-fundador',],
           ['Luiz Bonfim','Diretor de Engenharia',],
-          ['Gheovanna Machado','Diretora Comercial',],
-          ['Heitor Rodrigues','Contador e Programador',]
+          ['Geovana Machado','Diretora Comercial',],
+          ['Heitor Rodrigues','Marketing',],
+          ['Samuel','Advogado',]
         ].map(([n,r,img])=>`
           <div class="team-card reveal">
             <div class="team-photo"><img src="${img}" alt="${n}" loading="lazy"></div>
