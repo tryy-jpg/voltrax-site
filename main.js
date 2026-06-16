@@ -461,7 +461,7 @@ const VEHICLES = [
 ];
 
 const MARKETPLACE_PRODUCTS = [
-  { id: 'bat1', cat: 'batteries', name: 'Bateria LFP 80 kWh', desc: 'Módulo de bateria para expansão de autonomia. Compatível com VX-600 e VX-900.', price: 'R$ 48.000', img: 'https://kommodo.ai/i/Pqoq45DLw0zfpCZP9YTL' },
+  { id: 'bat1', cat: 'batteries', name: 'Bateria LFP 80 kWh', desc: 'Módulo de bateria para expansão de autonomia. Compatível com VX-600 e VX-900.', price: 'R$ 48.000', img: '' },
   { id: 'bat2', cat: 'batteries', name: 'Bateria LFP 40 kWh', desc: 'Módulo compacto para empilhadeiras e carregadeiras.', price: 'R$ 24.000', img: '' },
   { id: 'sol1', cat: 'solar', name: 'Kit Solar 50 kWp', desc: 'Painel bifacial de alta eficiência com inversor dedicado. Para recarga em campo.', price: 'R$ 72.000', img: '' },
   { id: 'sol2', cat: 'solar', name: 'Módulo Solar 480W', desc: 'Painel individual de alta performance para complementar o sistema.', price: 'R$ 980', img: '' },
